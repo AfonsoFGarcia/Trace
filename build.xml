@@ -14,6 +14,7 @@
 	</target>
 	<target name="jar" depends="compile" description="Creates the project jar">
 		<jar destfile="tracer.jar" basedir="classes">
+			<fileset dir="src" includes="**/*.java" />
 			<zipgroupfileset dir="lib" includes="**/*.jar" />
 		</jar>
 	</target>
