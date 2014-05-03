@@ -9,7 +9,11 @@ class Test {
 	}
 
 	public Object bar() {
-		return new String("Bar");
+		return foo();
+	}
+	
+	public Object baz(){
+		return bar();
 	}
 
 	public Object identity(Object o) {
@@ -18,8 +22,8 @@ class Test {
 
 	public void test() {
 		Trace.print(foo());
-		Object b = bar();
-		Trace.print(identity(b));
+		Trace.print(bar());
+		Trace.print(baz());
 	}
 }
 
