@@ -5,21 +5,21 @@ import java.util.HashMap;
 
 public class Trace {
 	
-	static HashMap<Object, ArrayList<String>> traceInfo = new HashMap<Object, ArrayList<String>>();
+	static HashMap<Integer, ArrayList<String>> traceInfo = new HashMap<Integer, ArrayList<String>>();
 	
 	static public void addTraceInfo (Object o, String info){
-		if(!traceInfo.containsKey(o)){
-			traceInfo.put(o, new ArrayList<String>());
+		if(!traceInfo.containsKey(System.identityHashCode(o))){
+			traceInfo.put(System.identityHashCode(o), new ArrayList<String>());
 		}
 		
-		traceInfo.get(o).add(info);
+		traceInfo.get(System.identityHashCode(o)).add(info);
 	
 	}
 
 	static public void print(Object o){
-		if(traceInfo.containsKey(o)){
+		if(traceInfo.containsKey(System.identityHashCode(o))){
 			System.err.println("Tracing for " + o.toString());
-			for(String out : traceInfo.get(o)){
+			for(String out : traceInfo.get(System.identityHashCode(o))){
 				System.err.println("  " + out);
 			}
 		}
