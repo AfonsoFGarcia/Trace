@@ -4,7 +4,7 @@
 		<mkdir dir="classes" />
 	</target>
 	<target name="compile" description="Compiles the classes" depends="init">
-		<javac srcdir="src" destdir="classes" includeantruntime="false">
+		<javac srcdir="src" destdir="classes" includeantruntime="false" debug="true">
 			<classpath>
 				<fileset dir="lib">
 					<include name="**/*.jar" />
