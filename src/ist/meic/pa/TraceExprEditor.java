@@ -10,57 +10,53 @@ import javassist.expr.NewExpr;
 
 public class TraceExprEditor extends ExprEditor {
 
-	public void edit(MethodCall m) throws CannotCompileException {
+    @Override
+    public void edit(MethodCall m) throws CannotCompileException {
 
-		String r = "";
-		if (m.where().getDeclaringClass().getName().equals("ist.meic.pa.Trace"))
-			return;
+        String r = "";
+        if (m.where().getDeclaringClass().getName().equals("ist.meic.pa.Trace")) {
+            return;
+        }
 
-		try {
-			r += "for(int i = 0; i < $args.length; i++) {ist.meic.pa.Trace.addTraceInfo($args[i], \"-> " + getLineInfo(m) + "\");}$_= $proceed($$);";
-			if (!m.getMethod().getReturnType().equals(CtClass.voidType)) {
-				r += "ist.meic.pa.Trace.addTraceInfo(($r)$_,\"<- "
-						+ getLineInfo(m) + "\");";
-			}
-			m.replace(r);
-		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        try {
+            r +=
+                    "for(int i = 0; i < $args.length; i++) {if(!$args[i].getClass().isPrimitive()) ist.meic.pa.Trace.addTraceInfo($args[i], \"-> "
+                            + getLineInfo(m) + "\");}$_= $proceed($$);";
+            if (!(m.getMethod().getReturnType().equals(CtClass.voidType) || m.getMethod().getReturnType().isPrimitive())) {
+                r += "ist.meic.pa.Trace.addTraceInfo(($r)$_,\"<- " + getLineInfo(m) + "\");";
+            }
+            m.replace(r);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
 
-	}
-	
-	public void edit(NewExpr e) throws CannotCompileException{
-		if (e.where().getDeclaringClass().getName().equals("ist.meic.pa.Trace"))
-			return;
-				
-		try {
-			e.replace("$_= $proceed($$); ist.meic.pa.Trace.addTraceInfo(($r)$_,\"<- "
-					+ getLineInfo(e) + "\");");
-		} catch (NotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		
-	}
+    }
 
-	private String getLineInfo(NewExpr e) throws NotFoundException {
-		String r = e.getConstructor().getLongName() + " on " + e.getFileName() + ":"
-				+ e.getLineNumber();
+    @Override
+    public void edit(NewExpr e) throws CannotCompileException {
+        if (e.where().getDeclaringClass().getName().equals("ist.meic.pa.Trace")) {
+            return;
+        }
 
-		return r;
-	}
+        try {
+            e.replace("$_= $proceed($$); ist.meic.pa.Trace.addTraceInfo(($r)$_,\"<- " + getLineInfo(e) + "\");");
+        } catch (NotFoundException e1) {
+            e1.printStackTrace();
+        }
 
-	public void edit(FieldAccess f) {
+    }
 
-	}
+    private String getLineInfo(NewExpr e) throws NotFoundException {
+        return e.getConstructor().getLongName() + " on " + e.getFileName() + ":" + e.getLineNumber();
+    }
 
-	String getLineInfo(MethodCall m) throws NotFoundException {
-		String r = m.getMethod().getLongName() + " on " + m.getFileName() + ":"
-				+ m.getLineNumber();
+    @Override
+    public void edit(FieldAccess f) {
 
-		return r;
-	}
+    }
+
+    String getLineInfo(MethodCall m) throws NotFoundException {
+        return m.getMethod().getLongName() + " on " + m.getFileName() + ":" + m.getLineNumber();
+    }
 
 }
