@@ -25,7 +25,7 @@ public class TraceVMExtended {
 
     private static void modifyPrint(CtClass tracer) {
         String newMethodBody =
-                "{ String ret = \"\"; if ($1.getClass().isArray()) { ret += \"[ \"; for (int i = 0; i < java.lang.reflect.Array.getLength($1); i++) { ret += objectToString(java.lang.reflect.Array.get($1, i)); ret += \" \"; } ret += \"]\"; } else if ($1.getClass().isPrimitive()) { ret += $1; } else { ret += $1.toString(); } return ret; }";
+                "{ String ret = \"\"; try {if ($1.getClass().isArray()) { ret += \"[ \"; for (int i = 0; i < java.lang.reflect.Array.getLength($1); i++) { ret += objectToString(java.lang.reflect.Array.get($1, i)); ret += \" \"; } ret += \"]\"; } else if ($1.getClass().isPrimitive()) { ret += $1; } else {  ret += $1.toString(); } } catch (java.lang.NullPointerException e) { ret += \"null\"; } return ret; }";
         try {
             CtMethod objectToString = tracer.getDeclaredMethod("objectToString");
             objectToString.setName("objectToString$original");
