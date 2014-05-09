@@ -28,7 +28,6 @@ public class TraceExprEditor extends ExprEditor {
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -42,7 +41,6 @@ public class TraceExprEditor extends ExprEditor {
         } catch (NotFoundException e1) {
             e1.printStackTrace();
         }
-
     }
 
     private String getLineInfo(NewExpr e) throws NotFoundException {
