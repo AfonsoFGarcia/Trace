@@ -4,7 +4,6 @@ import javassist.CannotCompileException;
 import javassist.CtClass;
 import javassist.NotFoundException;
 import javassist.expr.ExprEditor;
-import javassist.expr.FieldAccess;
 import javassist.expr.MethodCall;
 import javassist.expr.NewExpr;
 
@@ -50,12 +49,7 @@ public class TraceExprEditor extends ExprEditor {
         return e.getConstructor().getLongName() + " on " + e.getFileName() + ":" + e.getLineNumber();
     }
 
-    @Override
-    public void edit(FieldAccess f) {
-
-    }
-
-    String getLineInfo(MethodCall m) throws NotFoundException {
+    private String getLineInfo(MethodCall m) throws NotFoundException {
         return m.getMethod().getLongName() + " on " + m.getFileName() + ":" + m.getLineNumber();
     }
 
