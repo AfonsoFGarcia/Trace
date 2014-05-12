@@ -39,8 +39,8 @@ public class TraceExprEditor extends ExprEditor {
 
         try {
             e.replace("$_= $proceed($$); ist.meic.pa.Trace.addTraceInfo(($r)$_,\"<- " + getLineInfo(e) + "\");");
-        } catch (NotFoundException e1) {
-            e1.printStackTrace();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
 
     }

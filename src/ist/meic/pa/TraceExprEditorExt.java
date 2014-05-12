@@ -15,8 +15,8 @@ public class TraceExprEditorExt extends TraceExprEditor {
 
         try {
             a.replace("$_= $proceed($$); ist.meic.pa.Trace.addTraceInfo(($r)$_,\"<- " + getLineInfo(a) + "\");");
-        } catch (NotFoundException e1) {
-            e1.printStackTrace();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
 
     }
@@ -29,6 +29,14 @@ public class TraceExprEditorExt extends TraceExprEditor {
     public void edit(FieldAccess f) throws CannotCompileException {
         if (f.where().getDeclaringClass().getName().equals("ist.meic.pa.Trace")) {
             return;
+        }
+
+        try {
+            if (f.getField().getType().isPrimitive()) {
+                return;
+            }
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
 
         if (f.isReader()) {
