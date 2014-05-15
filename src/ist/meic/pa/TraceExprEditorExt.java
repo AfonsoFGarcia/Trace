@@ -41,13 +41,13 @@ public class TraceExprEditorExt extends TraceExprEditor {
 
         if (f.isReader()) {
             try {
-                f.replace("$_ = $proceed(); ist.meic.pa.Trace.addTraceInfo($_, \"-> " + getLineInfo(f) + "\");");
+                f.replace("$_ = $proceed(); if ($0 != null) ist.meic.pa.Trace.addTraceInfo($0, \"<- " + getLineInfo(f) + "\");");
             } catch (NotFoundException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                f.replace("ist.meic.pa.Trace.addTraceInfo($1, \"<- " + getLineInfo(f) + "\"); $proceed($$);");
+                f.replace("if ($0 != null) ist.meic.pa.Trace.addTraceInfo($0, \"-> " + getLineInfo(f) + "\"); $proceed($$);");
             } catch (NotFoundException e) {
                 e.printStackTrace();
             }
